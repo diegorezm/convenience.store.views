@@ -3,13 +3,8 @@ export enum OrderbyProductEntity {
   name = "name"
 }
 
-export enum ShowProducts {
-  false = "false",
-  true = "true"
-}
-
 export enum EntityActionsParam {
-  showInfo = "showInfo",
-  deleteEntity = "deleteEntity",
-  editEntity = "editEntity"
+  showProductInfo = "showInfo",
+  deleteProductEntity = "deleteEntity",
+  editProductEntity = "editEntity"
 }

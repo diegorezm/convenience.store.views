@@ -1,43 +1,10 @@
 "use server"
 import { ax } from "@/config/axios";
-import Transaction from "../models/transaction";
+import Transaction, { TransactionDTO } from "../models/transaction";
 import ErrorMessage from "../models/errorMessage";
-import { AxiosError } from "axios";
+import handleAxiosError from "./handleAxiosError";
 
 const URL = "/transaction"
-
-async function handleAxiosError(error: AxiosError): Promise<ErrorMessage> {
-  if (error.response) {
-    if (error.response.status == 401 && 'message' in error.response) {
-      return error.response.data as ErrorMessage;
-    }
-    if (error.response.status == 403 || error.response.status == 401) {
-      return {
-        message: "unauthorized.",
-        status: error.response.status
-      }
-    }
-    if (error.response.status == 201) {
-      return {
-        message: "Could not create the new transaction.",
-        status: 500
-      }
-    }
-    if (error.response.status == 403 || error.response.status == 401) {
-      return {
-        message: "unauthorized.",
-        status: error.response.status
-      }
-    }
-    if (error.response.status === 400 || error.response.status === 404) {
-      return error.response.data as ErrorMessage;
-    }
-  }
-  return {
-    message: "Internal server error.",
-    status: 500
-  };
-}
 
 export async function getAllTransactions() {
   try {
@@ -69,10 +36,10 @@ export async function getTransactionByProductId(productId: number) {
   }
 }
 
-export async function registerNewTransaction(data: Transaction) {
+export async function registerNewTransaction(data: TransactionDTO): Promise<Transaction | ErrorMessage> {
   try {
     const response = await ax.post(URL, data)
-    return response.data
+    return response.data as Transaction
   } catch (error: any) {
     return handleAxiosError(error)
   }

@@ -22,21 +22,22 @@ type Actions = {
 export default function DropdownColumnEntity({ product }: { product: ProductEntity }) {
   const pathname = usePathname()
   const { replace } = useRouter()
+
   const onInfoParam = () => {
     const param = new URLSearchParams()
-    param.set(EntityActionsParam.showInfo, product.id.toString())
+    param.set(EntityActionsParam.showProductInfo, product.id.toString())
     replace(`${pathname}?${param.toString()}`);
   }
 
   const onDeleteParam = () => {
     const param = new URLSearchParams()
-    param.set(EntityActionsParam.deleteEntity, product.id.toString())
+    param.set(EntityActionsParam.deleteProductEntity, product.id.toString())
     replace(`${pathname}?${param.toString()}`);
   }
 
   const onEditParam = () => {
     const param = new URLSearchParams()
-    param.set(EntityActionsParam.editEntity, product.id.toString())
+    param.set(EntityActionsParam.editProductEntity, product.id.toString())
     replace(`${pathname}?${param.toString()}`);
   }
   const actions: Actions[] = [

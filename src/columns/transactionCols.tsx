@@ -3,6 +3,7 @@ import Transaction from "@/models/transaction";
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown } from "lucide-react";
 import { formatDistance } from "date-fns";
+import DropdownTransaction from "@/components/TablesDropdown/dropdownTransaction";
 
 export const transactionCols: ColumnDef<Transaction>[] = [
   {
@@ -74,5 +75,12 @@ export const transactionCols: ColumnDef<Transaction>[] = [
       return <div>{d}</div>
     }
   },
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      const t = row.original
+      return <DropdownTransaction transaction={t} />
+    }
 
+  },
 ]

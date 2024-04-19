@@ -4,7 +4,7 @@ import ProductEntity from "@/models/productEntity";
 import { formatDistance } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown } from "lucide-react";
-import DropdownColumnEntity from "@/components/productEntityModal/dropdownColumn";
+import DropdownColumnEntity from "@/components/TablesDropdown/dropdownColEntity";
 
 export const entityColumns: ColumnDef<ProductEntity>[] = [
   {

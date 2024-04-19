@@ -1,13 +1,14 @@
 import { DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { cn } from "@/lib/utils"
 
-type EditHeaderProps = {
+interface EditHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
   title: string
   description?: string
 }
 
-export default function EditHeader({ title, description }: EditHeaderProps) {
+export default function Header({ title, description, className = "", ...rest }: EditHeaderProps) {
   return (
-    <DialogHeader>
+    <DialogHeader className={cn("", className)} {...rest}>
       <DialogTitle>{title}</DialogTitle>
       {description && (
         <DialogDescription>

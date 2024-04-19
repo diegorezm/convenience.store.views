@@ -1,13 +1,25 @@
-import { getToken } from "@/lib/tokenCookieManager"
+import { logout } from "@/actions/userActions"
+import { getToken, getTokenExpiresAt } from "@/lib/tokenCookieManager"
 import axios from "axios"
 
 export const ax = axios.create({
-  baseURL: 'http://localhost:8080',
+  baseURL: process.env.API_URL ?? "http://localhost:8080",
 })
+
+const isTokenExpired = (expired: Date) => {
+  const currentDate = new Date()
+  return currentDate > expired
+}
 
 export const axInterceptor = ax.interceptors.request.use(async (config) => {
   const token = await getToken()
-  if (token != "") {
+  const expired = await getTokenExpiresAt()
+  if (expired != null && isTokenExpired(expired)) {
+    logout()
+  }
+  else if (expired == null || token == "") {
+    logout()
+  } else {
     config.headers.Authorization = `Bearer ${token}`
   }
   return config
@@ -17,5 +29,4 @@ export const axInterceptor = ax.interceptors.request.use(async (config) => {
 
 export const setAxiosAuthHeader = async (token: string) => {
   ax.defaults.headers.common.Authorization = `Bearer ${token}`
-  console.log("header: " + ax.defaults.headers.Authorization)
 }

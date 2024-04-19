@@ -4,12 +4,12 @@ import {
 } from "@/components/ui/dialog"
 import React from "react"
 
-type EditRootProps = {
+interface RootProps{
   clearParams: () => void
   children: React.ReactNode
 }
 
-export default function EditRoot({ clearParams, children }: EditRootProps) {
+export default function Root({ clearParams, children}: RootProps) {
   return (
     <Dialog defaultOpen onOpenChange={clearParams}>
       <DialogContent>

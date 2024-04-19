@@ -46,10 +46,14 @@ export default function LoginPage() {
       if ('message' in response) {
         toast.error(response.message)
       } else {
-        userPersist(response.user, response.token)
-        toast.success("User logged in!")
-        form.reset()
-        router.push("/")
+        if (response.user) {
+          userPersist(response.user, response.token)
+          toast.success("User logged in!")
+          form.reset()
+          router.push("/")
+        } else {
+          toast.error("Something went wrong!")
+        }
       }
     }
     finally {
@@ -59,38 +63,40 @@ export default function LoginPage() {
 
   return (
     <Form {...form}>
-      <div className="w-full text-center my-2">
-        <h1 className="text-3xl font-bold">Login</h1>
+      <div className='w-full p-4'>
+        <div className="w-full text-center my-2 shadow-md">
+          <h1 className="text-3xl font-bold">Login</h1>
+        </div>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="shadow-md space-y-8 p-4">
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input placeholder="Your email..." {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input type='password' placeholder="Your password..." {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <LoadingButton text="submit" type='submit' isLoading={loading} />
+        </form>
       </div>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 p-4">
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input placeholder="Your email..." {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <Input type='password' placeholder="Your password..." {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <LoadingButton text="submit" type='submit' isLoading={loading} />
-      </form>
     </Form>
   )
 }

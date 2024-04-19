@@ -15,3 +15,22 @@ export async function deleteToken() {
   const cookieStore = cookies()
   cookieStore.set("token", "")
 }
+
+export async function setTokenExpiresAt(exp: Date) {
+  const cookieStore = cookies()
+  cookieStore.set("tokenExpiresAt", exp.toString())
+}
+
+export async function getTokenExpiresAt() {
+  const cookieStore = cookies()
+  const exp = cookieStore.get("tokenExpiresAt")
+  if (exp?.value) {
+    return new Date(exp.value)
+  }
+  return null
+}
+
+export async function deleteExpirationDate() {
+  const cookieStore = cookies()
+  cookieStore.set("tokenExpiresAt", "")
+}

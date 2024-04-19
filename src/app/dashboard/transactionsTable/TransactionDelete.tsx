@@ -1,10 +1,16 @@
-import { useState } from "react"
+import { deleteTransaction } from "@/actions/transactionActions"
 import DeleteDropdown from "@/components/deletedropdown"
-import { deleteProduct } from "@/actions/productsActions"
+import Transaction from "@/models/transaction"
+import { Dispatch, SetStateAction, useState } from "react"
 import toast from "react-hot-toast"
-import { ProductDropdownProps } from "."
 
-export default function DeleteProductDropdown({ clearParams, id }: ProductDropdownProps) {
+type TransactionDeleteProps = {
+  id: string
+  clearParams: () => void
+  setTransactions: Dispatch<SetStateAction<Transaction[]>>
+}
+
+export default function TransactionDelete({ id, clearParams, setTransactions }: TransactionDeleteProps) {
   const [loading, setLoading] = useState(false)
   const [open, setOpen] = useState(true)
   const pId = parseInt(id)
@@ -15,12 +21,13 @@ export default function DeleteProductDropdown({ clearParams, id }: ProductDropdo
   const handleDelete = async () => {
     try {
       setLoading(true)
-      const response = await deleteProduct(pId)
+      const response = await deleteTransaction(pId)
       if ('message' in response) {
         toast.error(response.message)
         return
       }
-      toast.success("Product deleted!")
+      toast.success("Transaction deleted!")
+      setTransactions(t => t.filter(i => i.id !== pId))
     } catch (error) {
       toast.error("Someting went wrong!")
     } finally {
@@ -31,7 +38,7 @@ export default function DeleteProductDropdown({ clearParams, id }: ProductDropdo
   return <DeleteDropdown
     openChange={openChange}
     open={open}
-    text={`Are you sure you want to delete this product with id ${id}?`}
+    text={`Are you sure you want to delete this transaction?`}
     handleDelete={handleDelete}
     isLoading={loading}
   />

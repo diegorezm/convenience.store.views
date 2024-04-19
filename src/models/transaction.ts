@@ -4,3 +4,7 @@ export default interface Transaction {
   productId: number,
   createdAt: Date,
 }
+export interface TransactionDTO {
+  cpf: string
+  productId: number
+}

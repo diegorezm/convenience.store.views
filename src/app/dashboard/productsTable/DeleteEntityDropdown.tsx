@@ -1,9 +1,9 @@
 import DeleteDropdown from "@/components/deletedropdown"
 import { deleteProductEntity } from "@/actions/productEntityActions"
-import { EntityDropdownProps } from "./page"
+import { ProductDropdownWithUpdatesProps } from "./index"
 import { useState } from "react"
 import toast from "react-hot-toast"
-export default function DeleteEntityDropdown({ clearParams, setProductEntities, id }: EntityDropdownProps) {
+export default function DeleteEntityDropdown({ clearParams, setProducts, id }: ProductDropdownWithUpdatesProps) {
   const [open, setOpen] = useState(true)
   const [loading, setLoading] = useState(false)
   const pId = parseInt(id)
@@ -20,10 +20,7 @@ export default function DeleteEntityDropdown({ clearParams, setProductEntities, 
         return
       }
       toast.success(`Entry with id ${pId} was deleted!`)
-      setProductEntities(e => {
-        const filteredList = e.filter(p => p.id != pId)
-        return filteredList
-      })
+      setProducts(products => products.filter(product => product.id !== pId));
     } catch (error) {
       toast.error("Something went wrong!")
     } finally {

@@ -22,7 +22,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { EntityDropdownProps } from "./page";
+import { ProductDropdownProps } from "./index";
 import { useEffect, useState } from "react";
 import ProductEntity from "@/models/productEntity";
 import Product from "@/models/product";
@@ -41,7 +41,7 @@ type Actions = {
   paramFn: (id: number) => void
 }
 
-export default function InfoProductDropdown({ clearParams, id }: EntityDropdownProps) {
+export default function InfoProductDropdown({ clearParams, id }: ProductDropdownProps) {
   const pId = parseInt(id)
 
   const { replace } = useRouter()
@@ -51,7 +51,8 @@ export default function InfoProductDropdown({ clearParams, id }: EntityDropdownP
     id: pId,
     name: "",
     createdAt: new Date(),
-    updatedAt: new Date()
+    updatedAt: new Date(),
+    products: []
 
   })
   const [products, setProducts] = useState<Product[]>([])
@@ -101,7 +102,6 @@ export default function InfoProductDropdown({ clearParams, id }: EntityDropdownP
     },
   ]
 
-
   return (
     <>
       <Dialog defaultOpen onOpenChange={clearParams}>
@@ -139,16 +139,20 @@ export default function InfoProductDropdown({ clearParams, id }: EntityDropdownP
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
                               <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                              {actions.map((a, u) => (
-                                <DropdownMenuItem key={u}
-                                  onClick={() => {
-                                    a.paramFn(e.id)
-                                  }}
-                                  className="flex flex-row gap-2 items-center">
-                                  <a.Icon className="w-4 h-4" />
-                                  {a.name}
-                                </DropdownMenuItem>
-                              ))}
+                              {actions.map((a, u) => {
+                                if (e.sold && a.name == "Transaction") return;
+                                return (
+                                  <DropdownMenuItem key={u}
+                                    onClick={() => {
+                                      a.paramFn(e.id)
+                                    }}
+                                    className="flex flex-row gap-2 items-center">
+                                    <a.Icon className="w-4 h-4" />
+                                    {a.name}
+                                  </DropdownMenuItem>
+                                )
+                              }
+                              )}
                             </DropdownMenuContent>
                           </DropdownMenu>
                         </TableCell>

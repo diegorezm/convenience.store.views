@@ -1,46 +1,18 @@
 "use server"
-import ProductEntity from "../models/productEntity"
+import ProductEntity, { ProductEntityDTO } from "../models/productEntity"
 import { ax } from "@/config/axios"
-import { OrderbyProductEntity, ShowProducts } from "../queryParams/productEntityQueryParams"
+import { OrderbyProductEntity } from "../queryParams/productEntityQueryParams"
 import { Order } from "../queryParams"
 import ErrorMessage from "../models/errorMessage"
-import { AxiosError } from "axios"
+import handleAxiosError from "./handleAxiosError"
 
 const URL = "/products/entities"
 
-async function handleAxiosError(error: AxiosError): Promise<ErrorMessage> {
-  if (error.response) {
-    if (error.response.status == 401 && 'message' in error.response) {
-      return error.response.data as ErrorMessage;
-    }
-    if (error.response.status == 403 || error.response.status == 401) {
-      return {
-        message: "unauthorized.",
-        status: error.response.status
-      }
-    }
-    if (error.response.status == 201) {
-      return {
-        message: "Could not create the new product.",
-        status: 500
-      }
-    }
-    if (error.response.status === 400 || error.response.status === 404) {
-      return error.response.data as ErrorMessage
-    }
-  }
-  return {
-    message: "Internal server error.",
-    status: 500
-  }
-}
-
 export async function getAllProductEntities({
   orderby = OrderbyProductEntity.id,
-  showProducts = ShowProducts.false,
   order = Order.asc
 }): Promise<ProductEntity[] | ErrorMessage> {
-  const reqUrl = `${URL}?orderby=${orderby}&showProducts=${showProducts}&order=${order}`
+  const reqUrl = `${URL}?orderby=${orderby}&order=${order}`
   try {
     const response = await ax.get(reqUrl)
     return response.data as ProductEntity[]
@@ -68,8 +40,8 @@ export async function registerNewProductEntity(data: ProductEntity): Promise<Pro
   }
 }
 
-export async function updateProductEntity(data: ProductEntity): Promise<ProductEntity | ErrorMessage> {
-  const reqUrl = `${URL}/${data.id}`
+export async function updateProductEntity({ id, data }: { id: number, data: ProductEntityDTO }): Promise<ProductEntity | ErrorMessage> {
+  const reqUrl = `${URL}/${id}`
   try {
     const response = await ax.put(reqUrl, data)
     return response.data

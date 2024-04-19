@@ -5,9 +5,9 @@ export default interface ProductEntity {
   name: string,
   createdAt: Date,
   updatedAt: Date,
+  products: Product[]
 }
 
-export interface ProductEntityWithMetadata {
-  productEntity: ProductEntity,
-  products: Product[]
+export interface ProductEntityDTO {
+  name: string
 }
