@@ -5,11 +5,12 @@ import { DialogFooter, DialogTrigger } from "../ui/dialog"
 
 interface EditFooterProps<T extends (...args: any[]) => any> extends React.HTMLAttributes<HTMLDivElement> {
   loadingText?: string
+  type?: "button" | "submit" | undefined
   isLoading: boolean
-  handler: T
+  handler?: T
 }
 
-export default function Footer<T extends (...args: any[]) => any>({ isLoading, handler, loadingText = "Loading...", className = "", ...rest }: EditFooterProps<T>) {
+export default function Footer<T extends (...args: any[]) => any>({ isLoading, handler, loadingText = "Loading...", className = "", type = "button", ...rest }: EditFooterProps<T>) {
   return (
     <DialogFooter className={cn("", className)} {...rest}>
       <DialogTrigger>
@@ -17,7 +18,7 @@ export default function Footer<T extends (...args: any[]) => any>({ isLoading, h
           Close
         </Button>
       </DialogTrigger>
-      <LoadingButton loadingText={loadingText} isLoading={isLoading} type="button" onClick={handler} />
+      <LoadingButton loadingText={loadingText} isLoading={isLoading} type={type} onClick={handler} />
     </DialogFooter>
   )
 }
