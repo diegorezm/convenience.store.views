@@ -1,6 +1,6 @@
 "use server"
 import { ax } from "@/config/axios"
-import ProductEntity from "../models/product"
+import { ProductDTO } from "../models/product"
 import { Order } from "../queryParams"
 import { OrderByProducts, soldQueryParam } from "../queryParams/productsQueryParams"
 import Product from "../models/product"
@@ -50,7 +50,7 @@ export async function getProductByEntityId(id: number) {
   }
 }
 
-export async function registerNewProduct(data: ProductEntity) {
+export async function registerNewProduct(data: ProductDTO) {
   try {
     const response = await ax.post(URL, data)
     return response.data as Product

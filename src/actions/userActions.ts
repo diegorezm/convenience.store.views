@@ -1,6 +1,6 @@
 "use server"
 import { ax, axInterceptor, setAxiosAuthHeader } from "@/config/axios";
-import User, { Login } from "../models/user";
+import User, { Login, UserDTO, UserEditDTO } from "../models/user";
 import { Order } from "../queryParams";
 import { OrderByUsers } from "../queryParams/userQueryParams";
 import authCookieManager from "@/lib/authCookieManager";
@@ -25,7 +25,7 @@ export async function login(data: Login) {
   }
 }
 
-export async function register(data: User) {
+export async function registerUser(data: UserDTO) {
   try {
     const response = await ax.post(URL, data)
     return response.data as User
@@ -44,9 +44,19 @@ export async function getAllUsers({ order = Order.desc, orderby = OrderByUsers.i
   }
 }
 
-export async function updateUser(data: User) {
+export async function getUserById(id: number) {
   try {
-    let reqUrl = `${URL}/${data.id}`
+    let reqUrl = `${URL}/${id}`
+    const response = await ax.get(reqUrl)
+    return response.data as User
+  } catch (error: any) {
+    return handleAxiosError(error)
+  }
+}
+
+export async function updateUser(id: number,data: UserEditDTO) {
+  try {
+    let reqUrl = `${URL}/${id}`
     const response = await ax.put(reqUrl, data)
     return response.data as User
   } catch (error: any) {

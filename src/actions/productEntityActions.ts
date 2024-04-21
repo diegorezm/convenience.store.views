@@ -31,7 +31,7 @@ export async function getProductEntityById(id: number): Promise<ProductEntity | 
   }
 }
 
-export async function registerNewProductEntity(data: ProductEntity): Promise<ProductEntity | ErrorMessage> {
+export async function registerNewProductEntity(data: ProductEntityDTO): Promise<ProductEntity | ErrorMessage> {
   try {
     const response = await ax.post(URL, data)
     return response.data
