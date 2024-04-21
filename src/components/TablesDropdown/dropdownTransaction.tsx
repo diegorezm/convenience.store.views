@@ -2,13 +2,11 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import Transaction from "@/models/transaction"
 import { TransactionQueryParam } from "@/queryParams/transactionQueryParam";
-import { LucideIcon, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
+import { LucideIcon, MoreHorizontal, Trash2 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { Button } from "../ui/button";
 
