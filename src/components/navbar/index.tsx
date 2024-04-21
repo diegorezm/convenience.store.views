@@ -2,7 +2,7 @@
 
 import { useAuthStore } from "@/lib/useAuthStore"
 import ModeToggle from "./modeToggle"
-import { LucideIcon, HomeIcon, ScanBarcode, ArrowLeftRight, LogIn, LogOutIcon, SlidersHorizontal } from 'lucide-react'
+import { LucideIcon, HomeIcon, LogIn, LogOutIcon, SlidersHorizontal } from 'lucide-react'
 import Button from "next/link"
 import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
