@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import Transaction from "@/models/transaction"
 import { TransactionQueryParam } from "@/queryParams/transactionQueryParam";
-import { LucideIcon, MoreHorizontal, Trash2 } from "lucide-react";
+import { LucideIcon, MoreHorizontal, Receipt, Trash2 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { Button } from "../ui/button";
 
@@ -20,12 +20,20 @@ type Actions = {
   paramFn: () => void
 }
 
+
 export default function DropdownTransaction({ transaction }: Props) {
   const pathname = usePathname()
   const { replace } = useRouter()
+
   const onDeleteParam = () => {
     const param = new URLSearchParams()
     param.set(TransactionQueryParam.deleteTransaction, transaction.id.toString())
+    replace(`${pathname}?${param.toString()}`);
+  }
+
+  const onLoadReceipt = () => {
+    const param = new URLSearchParams()
+    param.set(TransactionQueryParam.loadReceipt, transaction.id.toString())
     replace(`${pathname}?${param.toString()}`);
   }
 
@@ -34,10 +42,16 @@ export default function DropdownTransaction({ transaction }: Props) {
       name: "delete",
       Icon: Trash2,
       paramFn: onDeleteParam
+    },
+    {
+      name: "receipt",
+      Icon: Receipt,
+      paramFn: onLoadReceipt
     }
   ]
   return (
     <DropdownMenu>
+
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="h-8 w-8 p-0">
           <span className="sr-only">Open menu</span>

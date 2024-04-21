@@ -10,6 +10,7 @@ import toast from "react-hot-toast"
 import TransactionInputFilter from "./TransactionInputFilter"
 import { TransactionQueryParam } from "@/queryParams/transactionQueryParam"
 import TransactionDelete from "./TransactionDelete"
+import TransactionLoadReceipt from "./TransactionLoadReceipt"
 
 export default function Transactions() {
   const [transactions, setTransaction] = useState<Transaction[]>([])
@@ -22,7 +23,9 @@ export default function Transactions() {
 
   const LoadComponents = () => {
     const deleteParam = params.get(TransactionQueryParam.deleteTransaction) ?? ""
+      const loadPdfParam = params.get(TransactionQueryParam.loadReceipt) ?? ""
     if (params.has(TransactionQueryParam.deleteTransaction)) return <TransactionDelete setTransactions={setTransaction} id={deleteParam} clearParams={clearParams} />
+    if (params.has(TransactionQueryParam.loadReceipt)) return <TransactionLoadReceipt id={loadPdfParam} clearParams={clearParams} />
     return null
   }
   useEffect(() => {
