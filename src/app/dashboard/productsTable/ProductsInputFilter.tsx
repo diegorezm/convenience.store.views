@@ -7,7 +7,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button";
-import React from "react";
+import React, { useEffect } from "react";
 import { ArrowUpDown } from "lucide-react";
 import ProductEntity from "@/models/productEntity";
 import { getAllProductEntities } from "@/actions/productEntityActions";
@@ -22,17 +22,14 @@ export default function ProductsInputFilter({ products, setProducts }: ProductsT
   const searchPossibilities = ["id", "name"]
   const [search, setSearch] = React.useState(searchPossibilities[0])
   const [filter, setFilter] = React.useState("")
-  const searchById = (id: number): ProductEntity[] => {
-    const filteredResults = products.filter(p => p.id === id);
-    return filteredResults;
-  }
 
-  const searchByName = (name: string): ProductEntity[] => {
-    name = name.toLowerCase();
-    const filteredResults = products.filter(p => p.name.toLowerCase().includes(name));
-    return filteredResults;
-  }
-  const onBlur = async () => {
+  useEffect(() => {
+    if (filter == "") {
+      rebase()
+    }
+  }, [filter])
+
+  const rebase = async () => {
     if (!filter) {
       const response = await getAllProductEntities({})
       if ('message' in response) {
@@ -42,6 +39,19 @@ export default function ProductsInputFilter({ products, setProducts }: ProductsT
       setProducts(response)
     }
   }
+
+  const searchById = (id: number): ProductEntity[] => {
+    const filteredResults = products.filter(p => p.id === id);
+    return filteredResults;
+  }
+
+
+  const searchByName = (name: string): ProductEntity[] => {
+    name = name.toLowerCase();
+    const filteredResults = products.filter(p => p.name.toLowerCase().includes(name));
+    return filteredResults;
+  }
+
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     switch (search) {
@@ -61,7 +71,7 @@ export default function ProductsInputFilter({ products, setProducts }: ProductsT
   return (
     <div className="flex flex-row gap-2 w-3/4 md:w-1/2">
       <form className="w-full" onSubmit={onSubmit}>
-        <Input type={search == "id" ? "number" : "text"} placeholder={`Filter by ${search}...`} value={filter} onChange={e => setFilter(e.target.value)} onBlur={onBlur} />
+        <Input type={search == "id" ? "number" : "text"} placeholder={`Filter by ${search}...`} value={filter} onChange={e => setFilter(e.target.value)} />
       </form>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
