@@ -7,6 +7,13 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+
+import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -25,13 +32,13 @@ import {
 import { ProductDropdownProps } from "./index";
 import { useEffect, useState } from "react";
 import ProductEntity from "@/models/productEntity";
-import Product from "@/models/product";
+import Product, { ProductDTO } from "@/models/product";
 import { getProductEntityById } from "@/actions/productEntityActions";
-import { getProductByEntityId } from "@/actions/productsActions";
+import { getProductByEntityId, registerNewProduct } from "@/actions/productsActions";
 import toast from "react-hot-toast";
 import { DialogTrigger } from "@radix-ui/react-dialog";
 import { Button } from "@/components/ui/button";
-import { ArrowLeftRight, LucideIcon, MoreHorizontal, Trash2 } from "lucide-react";
+import { ArrowLeftRight, LucideIcon, MoreHorizontal, Plus, Trash2 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { ProductActionsParam } from "@/queryParams/productsQueryParams";
 
@@ -89,6 +96,19 @@ export default function InfoProductDropdown({ clearParams, id }: ProductDropdown
     replace(`${pathname}?${params.toString()}`)
   }
 
+  const addNewProduct = async () => {
+    const request: ProductDTO = {
+      entityId: pId
+    }
+    const response = await registerNewProduct(request)
+    if ('message' in response) {
+      toast.error(response.message)
+      return
+    }
+    setProducts(p => [...p, response])
+    toast.success("Product created!")
+  }
+
   const actions: Actions[] = [
     {
       name: "Delete",
@@ -102,6 +122,7 @@ export default function InfoProductDropdown({ clearParams, id }: ProductDropdown
     },
   ]
 
+
   return (
     <>
       <Dialog defaultOpen onOpenChange={clearParams}>
@@ -114,6 +135,20 @@ export default function InfoProductDropdown({ clearParams, id }: ProductDropdown
               <h2 className="text-lg">
                 All of the availiable products for: <span className="font-bold">{productEntity.name}</span>
               </h2>
+              <div className="w-full flex justify-end">
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Button className="h-8" onClick={addNewProduct}>
+                        <Plus />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>New product</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </div>
               <Table>
                 <TableHeader>
                   <TableRow>
