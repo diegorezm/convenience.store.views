@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button"
 import LoadingButton from "@/components/loadingButton"
 
 type DeleteDropdownProps<T extends (...args: any[]) => any> = {
+  title?: string
   text: string
   open: boolean
   isLoading?: boolean
@@ -19,13 +20,13 @@ type DeleteDropdownProps<T extends (...args: any[]) => any> = {
 }
 
 export default function DeleteDropdown<T extends (...args: any[]) => any>(
-  { open, openChange, handleDelete, isLoading = false, text }
+  { open, title = "Delete", openChange, handleDelete, isLoading = false, text }
     : DeleteDropdownProps<T>) {
   return (
     <Dialog open={open} onOpenChange={openChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Delete</DialogTitle>
+          <DialogTitle>{title}</DialogTitle>
           <DialogDescription>
             <span className="text-lg">{text}</span>
           </DialogDescription>
