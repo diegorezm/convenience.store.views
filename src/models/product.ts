@@ -5,3 +5,7 @@ export default interface Product {
   createdAt: Date,
   updatedAt: Date,
 }
+
+export type ProductDTO = {
+  entityId: number
+}
