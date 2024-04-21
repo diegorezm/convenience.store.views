@@ -3,3 +3,8 @@ export enum OrderByUsers {
   username = "username",
   email = "email"
 }
+
+export enum UserActions {
+  editUser = "editUser",
+  deleteUser = "deleteUser"
+}
