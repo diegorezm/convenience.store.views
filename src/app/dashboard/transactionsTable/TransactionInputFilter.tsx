@@ -6,7 +6,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button";
-import React from "react";
+import React, { useEffect } from "react";
 import { ArrowUpDown } from "lucide-react";
 import toast from "react-hot-toast";
 import Transaction from "@/models/transaction";
@@ -22,6 +22,12 @@ export default function TransactionInputFilter({ transactions, setTransactions}:
   const [search, setSearch] = React.useState(searchPossibilities[0])
   const [filter, setFilter] = React.useState("")
 
+  useEffect(() => {
+    if(filter === ""){
+      rebase()
+    }
+  }, [filter])
+
   const searchById = (id: number): Transaction[] => {
     const filteredResults = transactions.filter(p => p.id === id);
     return filteredResults;
@@ -33,7 +39,7 @@ export default function TransactionInputFilter({ transactions, setTransactions}:
     return filteredResults;
   }
 
-  const onBlur = async () => {
+  const rebase = async () => {
     if (!filter) {
       const response = await getAllTransactions()
       if ('message' in response) {
@@ -63,7 +69,7 @@ export default function TransactionInputFilter({ transactions, setTransactions}:
   return (
     <div className="flex flex-row gap-2 w-3/4 md:w-1/2">
       <form className="w-full" onSubmit={onSubmit}>
-        <Input type={search == "id" ? "number" : "text"} placeholder={`Filter by ${search}...`} value={filter} onChange={e => setFilter(e.target.value)} onBlur={onBlur} />
+        <Input type={search == "id" ? "number" : "text"} placeholder={`Filter by ${search}...`} value={filter} onChange={e => setFilter(e.target.value)} />
       </form>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>

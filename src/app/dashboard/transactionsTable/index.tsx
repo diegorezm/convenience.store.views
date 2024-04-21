@@ -15,10 +15,10 @@ export default function Transactions() {
   const [transactions, setTransaction] = useState<Transaction[]>([])
   const router = useRouter()
   const pathname = usePathname()
+  const params = useSearchParams()
   const clearParams = () => {
     router.replace(pathname);
   };
-  const params = useSearchParams()
 
   const LoadComponents = () => {
     const deleteParam = params.get(TransactionQueryParam.deleteTransaction) ?? ""
