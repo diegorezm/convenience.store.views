@@ -5,7 +5,7 @@ import {
 import React from "react"
 
 interface RootProps{
-  clearParams: () => void
+  clearParams?: () => void
   children: React.ReactNode
 }
 
