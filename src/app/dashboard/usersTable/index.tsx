@@ -64,7 +64,7 @@ export default function UsersTable() {
       <div className="w-full flex flex-row justify-between">
         <UserInputFilter users={users} setUsers={setUsers} />
         <Button className="flex justify-center gap-2" onClick={openCloseCreateModal}>
-          <span>Create new product</span>
+          <span>Create new user</span>
           <Plus className="w-5 h-5" />
         </Button>
       </div>
