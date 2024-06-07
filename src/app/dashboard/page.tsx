@@ -5,6 +5,7 @@ import Transactions from "./transactionsTable"
 import { useAuthStore } from "@/lib/useAuthStore"
 import { UserRoles } from "@/models/user"
 import UsersTable from "./usersTable"
+import { Suspense } from "react"
 
 type TabsList = {
   name: string
@@ -39,6 +40,7 @@ export default function Dashboard() {
   }
 
   return (
+    <Suspense>
     <section>
       <Tabs defaultValue="products" className="w-full">
         <div className="w-full px-4">
@@ -63,5 +65,7 @@ export default function Dashboard() {
         })}
       </Tabs>
     </section>
+    </Suspense>
+
   )
 }
