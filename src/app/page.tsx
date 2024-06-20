@@ -34,7 +34,7 @@ export default function Home() {
   return (
     <section className="p-4">
       <div>
-        <h1 className="text-4xl text-primary text-center">
+        <h1 className="text-4xl font-bold text-primary text-center">
           Convenience Store Api
         </h1>
       </div>
